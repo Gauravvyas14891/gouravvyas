@@ -1,45 +1,34 @@
 import { motion } from 'framer-motion'
 
-const experiences = [
+const projects = [
   {
-    title: 'Senior Photographer & Creative Director',
-    company: 'National Geographic',
-    location: 'Washington D.C.',
-    period: '2020 — Present',
-    description: 'Leading visual storytelling projects across five continents. Responsible for conceptualizing and executing long-form documentary series, managing a team of 8 photographers, and establishing visual guidelines for flagship publications.',
-    skills: ['Documentary Photography', 'Team Leadership', 'Art Direction', 'Visual Storytelling', 'Project Management'],
+    name: 'MediConnect',
+    status: 'In Development',
+    description:
+      'A student platform built specifically for Medi-Caps University — connecting students, counselors and official announcements in one place.',
+    features: [
+      'Student profiles & skills showcase',
+      'Official university announcements',
+      'Counselor connection',
+      'Student leaderboard & CGPA ranking',
+      'Internship & project tracking',
+      'Filters by year, semester, branch, course',
+    ],
+    tech: ['React', 'Node.js', 'Express.js', 'MongoDB'],
   },
   {
-    title: 'Staff Photographer',
-    company: 'The New York Times',
-    location: 'New York, NY',
-    period: '2018 — 2020',
-    description: 'Covered breaking news, features, and editorial assignments for print and digital platforms. Specialized in portrait photography and human interest stories. Work featured on front page 47 times.',
-    skills: ['Editorial Photography', 'Breaking News', 'Portrait Photography', 'Deadline Management', 'Photo Editing'],
-  },
-  {
-    title: 'Creative Director',
-    company: 'Time Magazine',
-    location: 'New York, NY',
-    period: '2016 — 2018',
-    description: 'Oversaw visual direction for special issues and cover stories. Collaborated with editors to develop compelling visual narratives. Managed relationships with contributing photographers worldwide.',
-    skills: ['Creative Direction', 'Visual Strategy', 'Team Coordination', 'Brand Identity', 'Magazine Publishing'],
-  },
-  {
-    title: 'Staff Photographer',
-    company: 'VII Photo Agency',
-    location: 'Berlin, Germany',
-    period: '2014 — 2016',
-    description: 'Worked on long-term documentary projects focusing on social issues and human rights. Assignments included coverage in conflict zones and humanitarian crises across Europe and Middle East.',
-    skills: ['Documentary', 'Conflict Photography', 'Humanitarian Coverage', 'Long-form Projects', 'Risk Assessment'],
-  },
-  {
-    title: 'Junior Photographer',
-    company: 'Magnum Photos',
-    location: 'London, UK',
-    period: '2012 — 2014',
-    description: 'Assisted senior photographers on international assignments. Developed technical skills in both digital and analog photography. First solo exhibition at the agency gallery in 2013.',
-    skills: ['Analog Photography', 'Digital Processing', 'Studio Lighting', 'Archive Management', 'Exhibition Curation'],
+    name: 'Travel Buddy',
+    status: 'Concept Stage',
+    description:
+      'A platform where international travelers can find a trusted Indian travel companion for authentic local experiences across India.',
+    features: [
+      'Local cultural guidance',
+      'Travel companionship',
+      'Trip planning',
+      'Authentic experiences',
+      'Safe exploration',
+    ],
+    tech: ['Concept'],
   },
 ]
 
@@ -47,70 +36,77 @@ const fadeInUp = {
   initial: { opacity: 0, y: 60 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: '-100px' },
-  transition: { duration: 1, ease: 'easeOut' }
+  transition: { duration: 1, ease: 'easeOut' },
 }
 
 export function Work() {
   return (
-    <section id="work" className="section-padding">
-      <div className="max-w-7xl mx-auto">
-        {/* Section Title */}
+    <section id="projects" className="section-padding bg-[#0a0a0a]">
+      <div className="max-w-6xl mx-auto">
         <motion.div {...fadeInUp} className="mb-16">
-          <span className="text-sm text-gray-500 tracking-widest uppercase">Career</span>
+          <span className="text-sm text-gray-500 tracking-widest uppercase">Selected Work</span>
           <div className="w-6 h-px bg-gray-600 mt-2" />
         </motion.div>
 
         <motion.h2
           {...fadeInUp}
-          className="font-display text-[10vw] lg:text-section leading-none tracking-tight mb-16 lg:mb-24"
+          className="font-display text-[10vw] lg:text-[6rem] leading-none tracking-tight mb-16 lg:mb-20"
         >
-          WORK<br />EXPERIENCE
+          PROJECTS
         </motion.h2>
 
-        {/* Experiences */}
-        <div className="space-y-0">
-          {experiences.map((exp, index) => (
+        <div className="space-y-6">
+          {projects.map((p, i) => (
             <motion.article
-              key={exp.company + exp.period}
+              key={p.name}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.8, ease: 'easeOut', delay: index * 0.1 }}
-              className="border-t border-gray-800 py-8 md:py-12 lg:py-16 group"
+              transition={{ duration: 0.7, delay: i * 0.1 }}
+              className="border border-gray-800 rounded-2xl p-6 lg:p-10 bg-white/[0.015] hover:border-gray-700 transition-colors"
             >
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-                {/* Left Column - Title & Company */}
-                <div className="lg:col-span-5">
-                  <h3 className="text-xl md:text-2xl lg:text-3xl font-light text-white mb-2">
-                    {exp.title}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
+                <div className="lg:col-span-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-xs tracking-widest uppercase text-gray-500">
+                      0{i + 1}
+                    </span>
+                    <span className="px-2.5 py-1 text-[10px] tracking-widest uppercase rounded-full border border-gray-700 text-gray-400">
+                      {p.status}
+                    </span>
+                  </div>
+                  <h3 className="text-3xl lg:text-4xl font-display tracking-tight text-white">
+                    {p.name}
                   </h3>
-                  <p className="text-base lg:text-lg text-gray-400">
-                    {exp.company}
-                  </p>
-                  <p className="text-sm text-gray-600 mt-2">
-                    {exp.location}
+                  <p className="mt-4 text-sm lg:text-base text-gray-400 leading-relaxed">
+                    {p.description}
                   </p>
                 </div>
 
-                {/* Middle Column - Period */}
-                <div className="lg:col-span-2">
-                  <p className="text-sm text-gray-500 tracking-widest uppercase">
-                    {exp.period}
-                  </p>
-                </div>
-
-                {/* Right Column - Description & Skills */}
                 <div className="lg:col-span-5">
-                  <p className="text-gray-400 leading-relaxed mb-6 text-sm lg:text-base">
-                    {exp.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {exp.skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="px-3 py-1 text-xs text-gray-500 border border-gray-800 rounded-full"
+                  <p className="text-xs tracking-widest uppercase text-gray-500 mb-4">Features</p>
+                  <ul className="space-y-2">
+                    {p.features.map((f) => (
+                      <li
+                        key={f}
+                        className="text-sm text-gray-300 flex gap-3 leading-relaxed"
                       >
-                        {skill}
+                        <span className="text-gray-600 mt-1">—</span>
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="lg:col-span-3">
+                  <p className="text-xs tracking-widest uppercase text-gray-500 mb-4">Tech</p>
+                  <div className="flex flex-wrap gap-2">
+                    {p.tech.map((t) => (
+                      <span
+                        key={t}
+                        className="px-3 py-1 text-xs text-gray-400 border border-gray-800 rounded-full"
+                      >
+                        {t}
                       </span>
                     ))}
                   </div>
@@ -118,7 +114,6 @@ export function Work() {
               </div>
             </motion.article>
           ))}
-          <div className="border-t border-gray-800" />
         </div>
       </div>
     </section>

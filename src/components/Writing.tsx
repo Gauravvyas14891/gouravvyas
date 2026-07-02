@@ -1,82 +1,63 @@
 import { motion } from 'framer-motion'
 
-const articles = [
-  {
-    title: 'Visual Storytelling in the Digital Age',
-    publication: 'Aperture Magazine',
-    year: '2023',
-    link: '#',
-  },
-  {
-    title: 'The Ethics of Documentary Photography',
-    publication: 'Photography Journal',
-    year: '2022',
-    link: '#',
-  },
-  {
-    title: 'Finding Light in Darkness: A Personal Journey',
-    publication: 'The New York Times',
-    year: '2021',
-    link: '#',
-  },
-  {
-    title: 'Why Black & White Still Matters',
-    publication: 'British Journal of Photography',
-    year: '2020',
-    link: '#',
-  },
+const stack: { category: string; items: string[] }[] = [
+  { category: 'Languages', items: ['Java', 'JavaScript', 'HTML', 'CSS'] },
+  { category: 'Frontend', items: ['HTML5', 'CSS3', 'JavaScript (ES6+)', 'Tailwind CSS', 'Bootstrap', 'React'] },
+  { category: 'Backend', items: ['Node.js', 'Express.js'] },
+  { category: 'Database', items: ['MongoDB'] },
+  { category: 'Tools', items: ['Git', 'GitHub', 'VS Code', 'Terminal', 'MongoDB Compass', 'MongoDB Shell'] },
+  { category: 'Learning', items: ['Artificial Intelligence', 'Data Science', 'Cybersecurity', 'MERN Stack', 'Software Architecture'] },
 ]
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: '-100px' },
-  transition: { duration: 0.8, ease: 'easeOut' }
+  transition: { duration: 0.8, ease: 'easeOut' },
 }
 
 export function Writing() {
+  // Repurposed as Tech Stack section (id kept as 'stack')
   return (
-    <section id="writing" className="section-padding">
-      <div className="max-w-7xl mx-auto">
-        {/* Section Title */}
+    <section id="stack" className="section-padding">
+      <div className="max-w-6xl mx-auto">
         <motion.div {...fadeInUp} className="mb-16">
-          <span className="text-sm text-gray-500 tracking-widest uppercase">Essays & Articles</span>
+          <span className="text-sm text-gray-500 tracking-widest uppercase">Tech Stack</span>
           <div className="w-6 h-px bg-gray-600 mt-2" />
         </motion.div>
 
         <motion.h2
           {...fadeInUp}
-          className="font-display text-[10vw] lg:text-section leading-none tracking-tight mb-16 lg:mb-24"
+          className="font-display text-[10vw] lg:text-[6rem] leading-none tracking-tight mb-16"
         >
-          WRITING
+          STACK
         </motion.h2>
 
-        {/* Articles List */}
-        <div className="space-y-0">
-          {articles.map((article, index) => (
-            <motion.a
-              key={article.title}
-              href={article.link}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {stack.map((group, i) => (
+            <motion.div
+              key={group.category}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="block border-t border-gray-800 py-6 md:py-8 group hover:bg-gray-900/30 transition-colors px-4 -mx-4"
+              transition={{ duration: 0.6, delay: i * 0.08 }}
+              className="border border-gray-800 rounded-2xl p-6 bg-white/[0.015] backdrop-blur-sm hover:border-gray-700 transition-colors"
             >
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4">
-                <div>
-                  <h3 className="text-lg md:text-xl lg:text-2xl text-white font-light group-hover:text-gray-300 transition-colors">
-                    {article.title}
-                  </h3>
-                  <p className="text-sm text-gray-500 mt-1 md:mt-2">
-                    Essay — {article.publication}
-                  </p>
-                </div>
-                <span className="text-sm text-gray-600">{article.year}</span>
+              <p className="text-xs tracking-widest uppercase text-gray-500 mb-4">
+                {group.category}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {group.items.map((item) => (
+                  <span
+                    key={item}
+                    className="px-3 py-1.5 text-sm text-gray-300 border border-gray-800 rounded-full"
+                  >
+                    {item}
+                  </span>
+                ))}
               </div>
-            </motion.a>
+            </motion.div>
           ))}
-          <div className="border-t border-gray-800" />
         </div>
       </div>
     </section>
