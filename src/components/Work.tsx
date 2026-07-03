@@ -2,8 +2,52 @@ import { motion } from 'framer-motion'
 
 const projects = [
   {
+    name: 'AI Student Progress Manager',
+    status: 'In Development',
+    description:
+      'A hyper-personalized, college-specific AI study manager that tracks syllabus, assignments, attendance and exams — then generates a daily/weekly study plan tailored to each student.',
+    features: [
+      'Subject dashboard with completed & pending topics',
+      'AI-generated daily & weekly study plans',
+      'Weak-topic detector from quizzes & self-rating',
+      'Smart reminders for assignments & revision',
+      'AI doubt helper explaining topics simply',
+      'College mode — shared syllabus per branch & semester',
+    ],
+    tech: ['React', 'Node.js', 'AI / LLM', 'MongoDB'],
+  },
+  {
+    name: 'GapSeat',
+    status: 'In Development',
+    description:
+      'A journey optimization engine for Indian Railways that stitches fragmented seat availability across segments into a fully confirmed end-to-end journey.',
+    features: [
+      'Automatic segment detection between source & destination',
+      'Seat continuity scoring (fewest changes, best comfort)',
+      'Smart route recommendations — cheapest, fastest, comfiest',
+      'Unified PNR organizer with coach & platform reminders',
+      'AI Tatkal strategy & cancellation prediction',
+      'Multi-train stitching for impossible direct routes',
+    ],
+    tech: ['React', 'Supabase', 'Node.js', 'AI / LLM', 'Graph Routing'],
+  },
+  {
+    name: 'JavaScript Mini Projects Collection',
+    status: 'In Progress — 75%',
+    description:
+      'A growing collection of interactive web applications demonstrating core JavaScript concepts — DOM manipulation, event handling and modern ES6+ features.',
+    features: [
+      'To-Do List with data persistence',
+      'Scientific Calculator',
+      'Interactive Quiz App',
+      'Weather Dashboard',
+      '12+ mini components and utilities',
+    ],
+    tech: ['HTML', 'CSS', 'JavaScript', 'DOM API', 'Local Storage'],
+  },
+  {
     name: 'MediConnect',
-    status: 'ABANDONED',
+    status: 'Abandoned',
     description:
       'A student platform built specifically for Medi-Caps University — connecting students, counselors and official announcements in one place.',
     features: [
@@ -17,20 +61,36 @@ const projects = [
     tech: ['React', 'Node.js', 'Express.js', 'MongoDB'],
   },
   {
-    name: 'Travel Buddy',
+    name: 'Personalized Fashion Designer',
     status: 'Concept Stage',
     description:
-      'A platform where international travelers can find a trusted Indian travel companion for authentic local experiences across India.',
+      'An AI stylist that turns your existing clothes into a virtual wardrobe and recommends outfits, purchases and in-store buys based on your body, budget and style.',
     features: [
-      'Local cultural guidance',
-      'Travel companionship',
-      'Trip planning',
-      'Authentic experiences',
-      'Safe exploration',
+      'Upload photos of yourself and your clothes',
+      'Auto-generated combos: streetwear, formal, casual',
+      'Virtual wardrobe with saved looks',
+      'AI shopping assistant with budget-aware advice',
+      'In-store mode — scan shortlisted clothes for best pick',
+      'Recommendations tuned to body tone & physique',
     ],
-    tech: ['Concept'],
+    tech: ['React', 'Computer Vision', 'AI / LLM', 'Supabase'],
+  },
+  {
+    name: 'Run and Cover',
+    status: 'Concept Stage',
+    description:
+      'A fitness app that turns jogging into a territory game — the ground you run over becomes land you virtually own, and others can reclaim it by outrunning you.',
+    features: [
+      'GPS-based territory capture while running',
+      'Virtual land ownership tied to distance covered',
+      'Competitive reclaim mechanic between runners',
+      'Leaderboards for largest owned area',
+      'Motivation loop for consistent, longer runs',
+    ],
+    tech: ['React Native', 'Geolocation', 'Node.js', 'Supabase'],
   },
 ]
+
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
