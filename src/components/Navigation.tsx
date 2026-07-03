@@ -5,8 +5,7 @@ import { cn } from '@/lib/utils'
 
 const navItems = [
   { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'stack', label: 'Stack' },
+  { id: 'skills', label: 'Stack' },
   { id: 'projects', label: 'Projects' },
   { id: 'education', label: 'Education' },
   { id: 'goals', label: 'Goals' },
