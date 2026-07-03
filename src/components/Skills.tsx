@@ -30,7 +30,7 @@ const categories: Category[] = [
       { name: 'Java', icon: FaJava },
       { name: 'JavaScript', icon: SiJavascript },
       { name: 'HTML5', icon: SiHtml5 },
-      { name: 'CSS3', icon: SiCss3 },
+      { name: 'CSS3', icon: SiCss },
       { name: 'TypeScript', icon: SiTypescript, note: 'Basic' },
     ],
   },
