@@ -26,7 +26,7 @@ export function Hero() {
             className="mb-8 flex items-center gap-3 text-xs tracking-widest uppercase text-gray-500"
           >
             <span className="w-8 h-px bg-gray-600" />
-            <span>Portfolio — 2026</span>
+            <span>PORTFOLIO — 2025</span>
           </motion.div>
 
           <motion.h1
