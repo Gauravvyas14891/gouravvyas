@@ -15,8 +15,6 @@ import {
   SiGithub,
   SiPostman,
   SiNpm,
-  }  from 'react-icons/si'
-
 } from 'react-icons/si'
 import { FaJava, FaBrain } from 'react-icons/fa'
 import { VscCode } from 'react-icons/vsc'
