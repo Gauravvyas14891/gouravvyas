@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 const projects = [
   {
     name: 'MediConnect',
-    status: 'In Development',
+    status: 'ABANDONED',
     description:
       'A student platform built specifically for Medi-Caps University — connecting students, counselors and official announcements in one place.',
     features: [
