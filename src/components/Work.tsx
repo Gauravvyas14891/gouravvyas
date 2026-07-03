@@ -14,66 +14,11 @@ const projects = [
       'AI doubt helper explaining topics simply',
       'College mode — shared syllabus per branch & semester',
     ],
-    tech: ['React', 'Node.js', 'AI / LLM', 'MongoDB'],
-  },
-  {
-    name: 'GapSeat',
-    status: 'In Development',
-    description:
-      'A journey optimization engine for Indian Railways that stitches fragmented seat availability across segments into a fully confirmed end-to-end journey.',
-    features: [
-      'Automatic segment detection between source & destination',
-      'Seat continuity scoring (fewest changes, best comfort)',
-      'Smart route recommendations — cheapest, fastest, comfiest',
-      'Unified PNR organizer with coach & platform reminders',
-      'AI Tatkal strategy & cancellation prediction',
-      'Multi-train stitching for impossible direct routes',
-    ],
-    tech: ['React', 'Supabase', 'Node.js', 'AI / LLM', 'Graph Routing'],
-  },
-  {
-    name: 'JavaScript Mini Projects Collection',
-    status: 'In Progress — 75%',
-    description:
-      'A growing collection of interactive web applications demonstrating core JavaScript concepts — DOM manipulation, event handling and modern ES6+ features.',
-    features: [
-      'To-Do List with data persistence',
-      'Scientific Calculator',
-      'Interactive Quiz App',
-      'Weather Dashboard',
-      '12+ mini components and utilities',
-    ],
-    tech: ['HTML', 'CSS', 'JavaScript', 'DOM API', 'Local Storage'],
-  },
-  {
-    name: 'MediConnect',
-    status: 'Abandoned',
-    description:
-      'A student platform built specifically for Medi-Caps University — connecting students, counselors and official announcements in one place.',
-    features: [
-      'Student profiles & skills showcase',
-      'Official university announcements',
-      'Counselor connection',
-      'Student leaderboard & CGPA ranking',
-      'Internship & project tracking',
-      'Filters by year, semester, branch, course',
-    ],
-    tech: ['React', 'Node.js', 'Express.js', 'MongoDB'],
-  },
-  {
-    name: 'Personalized Fashion Designer',
-    status: 'Concept Stage',
-    description:
-      'An AI stylist that turns your existing clothes into a virtual wardrobe and recommends outfits, purchases and in-store buys based on your body, budget and style.',
-    features: [
-      'Upload photos of yourself and your clothes',
-      'Auto-generated combos: streetwear, formal, casual',
-      'Virtual wardrobe with saved looks',
-      'AI shopping assistant with budget-aware advice',
-      'In-store mode — scan shortlisted clothes for best pick',
-      'Recommendations tuned to body tone & physique',
-    ],
-    tech: ['React', 'Computer Vision', 'AI / LLM', 'Supabase'],
+    tech: ['React', 'Node.js', 'AI /LLM', 'MongoDB'],
+...
+    tech: ['React', 'Supabase', 'Node.js', 'AI /LLM', 'Graph Routing'],
+...
+    tech: ['React', 'Computer Vision', 'AI /LLM', 'Supabase'],
   },
   {
     name: 'Run and Cover',
