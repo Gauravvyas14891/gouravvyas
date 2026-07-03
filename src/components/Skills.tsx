@@ -3,7 +3,7 @@ import {
   SiJavascript,
   SiTypescript,
   SiHtml5,
-  SiCss3,
+  SiCss,
   SiReact,
   SiTailwindcss,
   SiBootstrap,
@@ -15,7 +15,8 @@ import {
   SiGithub,
   SiPostman,
   SiNpm,
-  SiOpenai,
+  SiOpenai as SiOpenaiIcon,
+
 } from 'react-icons/si'
 import { FaJava } from 'react-icons/fa'
 import { VscCode } from 'react-icons/vsc'
