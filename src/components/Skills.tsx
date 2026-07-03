@@ -15,7 +15,7 @@ import {
   SiGithub,
   SiPostman,
   SiNpm,
-  SiOpenai as SiOpenaiIcon,
+  }  from 'react-icons/si'
 
 } from 'react-icons/si'
 import { FaJava, FaBrain } from 'react-icons/fa'
