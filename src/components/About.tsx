@@ -31,7 +31,7 @@ export function About() {
               coursework, I develop applications that solve real problems.
             </motion.p>
             <motion.p {...fadeInUp} className="text-base text-gray-400 leading-relaxed">
-              My interests span artificial intelligence, web development, cybersecurity, entrepreneurship,
+              My interests span artificial intelligence, data science, cybersecurity, entrepreneurship,
               and software engineering. I'm currently focused on sharpening my development skills,
               strengthening my AI knowledge, contributing to open source, and building startup products
               that create meaningful impact.
