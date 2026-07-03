@@ -18,7 +18,7 @@ import {
   SiOpenai as SiOpenaiIcon,
 
 } from 'react-icons/si'
-import { FaJava } from 'react-icons/fa'
+import { FaJava, FaBrain } from 'react-icons/fa'
 import { VscCode } from 'react-icons/vsc'
 import type { IconType } from 'react-icons'
 
