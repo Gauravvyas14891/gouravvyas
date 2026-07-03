@@ -70,7 +70,7 @@ const categories: Category[] = [
   {
     title: 'AI & Learning',
     items: [
-      { name: 'Artificial Intelligence', icon: SiOpenai },
+      { name: 'Artificial Intelligence', icon: FaBrain },
       { name: 'Prompt Engineering' },
       { name: 'AI-assisted Development' },
     ],
