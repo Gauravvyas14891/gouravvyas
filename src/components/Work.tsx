@@ -14,7 +14,7 @@ const projects = [
       'AI doubt helper explaining topics simply',
       'College mode — shared syllabus per branch & semester',
     ],
-    tech: ['React', 'Node.js', 'AI / LLM', 'MongoDB'],
+    tech: ['React', 'Node.js', 'AI /LLM', 'MongoDB'],
   },
   {
     name: 'GapSeat',
@@ -29,7 +29,7 @@ const projects = [
       'AI Tatkal strategy & cancellation prediction',
       'Multi-train stitching for impossible direct routes',
     ],
-    tech: ['React', 'Supabase', 'Node.js', 'AI / LLM', 'Graph Routing'],
+    tech: ['React', 'Supabase', 'Node.js', 'AI /LLM', 'Graph Routing'],
   },
   {
     name: 'JavaScript Mini Projects Collection',
@@ -73,7 +73,7 @@ const projects = [
       'In-store mode — scan shortlisted clothes for best pick',
       'Recommendations tuned to body tone & physique',
     ],
-    tech: ['React', 'Computer Vision', 'AI / LLM', 'Supabase'],
+    tech: ['React', 'Computer Vision', 'AI /LLM', 'Supabase'],
   },
   {
     name: 'Run and Cover',
