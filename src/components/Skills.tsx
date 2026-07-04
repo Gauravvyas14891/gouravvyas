@@ -65,6 +65,17 @@ const categories: Category[] = [
       { name: 'Cursor AI' },
       { name: 'Postman', icon: SiPostman },
       { name: 'npm', icon: SiNpm },
+      { name: 'Terminal' },
+      { name: 'MongoDB Compass' },
+      { name: 'MongoDB Shell' },
+    ],
+  },
+  {
+    title: 'Concepts',
+    items: [
+      { name: 'MERN Stack' },
+      { name: 'Software Architecture' },
+      { name: 'Responsive Web Design' },
     ],
   },
   {
