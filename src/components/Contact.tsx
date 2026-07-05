@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useSiteSettings } from '@/hooks/useSiteData'
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -8,6 +9,25 @@ const fadeInUp = {
 }
 
 export function Contact() {
+  const { settings } = useSiteSettings()
+
+  const items = [
+    { label: 'Email', value: settings?.email || '—', href: settings?.email ? `mailto:${settings.email}` : undefined },
+    {
+      label: 'GitHub',
+      value: settings?.github_url ? settings.github_url.replace(/^https?:\/\/(www\.)?github\.com\//, '') : '—',
+      href: settings?.github_url || undefined,
+    },
+    {
+      label: 'LinkedIn',
+      value: settings?.linkedin_url
+        ? settings.linkedin_url.replace(/^https?:\/\/(www\.)?linkedin\.com\//, '')
+        : '—',
+      href: settings?.linkedin_url || undefined,
+    },
+    { label: 'Location', value: settings?.location || 'India' },
+  ]
+
   return (
     <section id="contact" className="section-padding">
       <div className="max-w-6xl mx-auto">
@@ -29,34 +49,27 @@ export function Contact() {
           </span>
         </motion.h2>
 
-        <motion.p
-          {...fadeInUp}
-          className="text-lg lg:text-xl text-gray-400 max-w-2xl leading-relaxed mb-12"
-        >
-          I'm always open to conversations around AI, startups, open source, or interesting
-          engineering problems. Contact details will be added here soon.
+        <motion.p {...fadeInUp} className="text-lg lg:text-xl text-gray-400 max-w-2xl leading-relaxed mb-12">
+          I'm always open to conversations around AI, startups, open source, or interesting engineering
+          problems. Reach out via any of these channels.
         </motion.p>
 
-        <motion.div
-          {...fadeInUp}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl"
-        >
-          {[
-            { label: 'Email', value: 'Coming soon' },
-            { label: 'GitHub', value: 'Coming soon' },
-            { label: 'LinkedIn', value: 'Coming soon' },
-            { label: 'Location', value: 'India' },
-          ].map((item) => (
-            <div
-              key={item.label}
-              className="border border-gray-800 rounded-xl p-5 bg-white/[0.015]"
-            >
-              <p className="text-xs tracking-widest uppercase text-gray-500 mb-2">
-                {item.label}
-              </p>
-              <p className="text-base text-gray-300">{item.value}</p>
-            </div>
-          ))}
+        <motion.div {...fadeInUp} className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl">
+          {items.map((item) => {
+            const Wrapper = item.href ? 'a' : 'div'
+            return (
+              <Wrapper
+                key={item.label}
+                {...(item.href
+                  ? { href: item.href, target: '_blank', rel: 'noreferrer' }
+                  : {})}
+                className="border border-gray-800 rounded-xl p-5 bg-white/[0.015] hover:border-gray-700 transition-colors block"
+              >
+                <p className="text-xs tracking-widest uppercase text-gray-500 mb-2">{item.label}</p>
+                <p className="text-base text-gray-300 break-all">{item.value}</p>
+              </Wrapper>
+            )
+          })}
         </motion.div>
 
         <motion.footer
@@ -66,7 +79,7 @@ export function Contact() {
           <p className="text-xs text-gray-600">
             © {new Date().getFullYear()} Gourav Vyas. Built with care.
           </p>
-          <p className="text-xs text-gray-600">Indore, India</p>
+          <p className="text-xs text-gray-600">{settings?.location || 'India'}</p>
         </motion.footer>
       </div>
     </section>
