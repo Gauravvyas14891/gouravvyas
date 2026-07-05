@@ -5,7 +5,7 @@ import { About } from '@/components/About'
 import { Skills } from '@/components/Skills'
 import { Work } from '@/components/Work'
 import { Education } from '@/components/Education'
-
+import { DynamicSections } from '@/components/DynamicSections'
 import { Speaking } from '@/components/Speaking'
 import { Contact } from '@/components/Contact'
 
@@ -20,11 +20,10 @@ export default function Index() {
         <Skills />
         <Work />
         <Education />
-        
+        <DynamicSections />
         <Speaking />
         <Contact />
       </main>
     </div>
   )
 }
-
