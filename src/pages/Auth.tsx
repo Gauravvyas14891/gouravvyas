@@ -31,6 +31,13 @@ export default function AuthPage() {
         if (error) throw error
         toast.success('Account created. You can now sign in.')
         setMode('signin')
+      } else if (mode === 'forgot') {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/reset-password`,
+        })
+        if (error) throw error
+        toast.success('If that email exists, a reset link has been sent.')
+        setMode('signin')
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
