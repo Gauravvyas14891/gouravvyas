@@ -19,76 +19,30 @@ import {
 import { FaJava, FaBrain } from 'react-icons/fa'
 import { VscCode } from 'react-icons/vsc'
 import type { IconType } from 'react-icons'
+import { useContentBlock } from '@/hooks/useSiteData'
+import type { Skill, SkillCategory } from '@/content/defaultContent'
 
-type Skill = { name: string; icon?: IconType; note?: string }
-type Category = { title: string; items: Skill[] }
-
-const categories: Category[] = [
-  {
-    title: 'Languages',
-    items: [
-      { name: 'Java', icon: FaJava },
-      { name: 'JavaScript', icon: SiJavascript },
-      { name: 'HTML5', icon: SiHtml5 },
-      { name: 'CSS3', icon: SiCss },
-      { name: 'TypeScript', icon: SiTypescript, note: 'Basic' },
-    ],
-  },
-  {
-    title: 'Frontend',
-    items: [
-      { name: 'React.js', icon: SiReact },
-      { name: 'Tailwind CSS', icon: SiTailwindcss },
-      { name: 'Bootstrap', icon: SiBootstrap },
-      { name: 'Responsive Design' },
-      { name: 'Vite', icon: SiVite },
-    ],
-  },
-  {
-    title: 'Backend',
-    items: [
-      { name: 'Node.js', icon: SiNodedotjs },
-      { name: 'Express.js', icon: SiExpress },
-      { name: 'REST APIs' },
-    ],
-  },
-  {
-    title: 'Database',
-    items: [{ name: 'MongoDB', icon: SiMongodb }],
-  },
-  {
-    title: 'Tools',
-    items: [
-      { name: 'Git', icon: SiGit },
-      { name: 'GitHub', icon: SiGithub },
-      { name: 'VS Code', icon: VscCode },
-      { name: 'Cursor AI' },
-      { name: 'Postman', icon: SiPostman },
-      { name: 'npm', icon: SiNpm },
-      { name: 'Terminal' },
-      { name: 'MongoDB Compass' },
-      { name: 'MongoDB Shell' },
-    ],
-  },
-  {
-    title: 'Concepts',
-    items: [
-      { name: 'MERN Stack' },
-      { name: 'Software Architecture' },
-      { name: 'Responsive Web Design' },
-    ],
-  },
-  {
-    title: 'AI & Learning',
-    items: [
-      { name: 'Artificial Intelligence', icon: FaBrain },
-      { name: 'Prompt Engineering' },
-      { name: 'AI-assisted Development' },
-    ],
-  },
-]
-
-const learning = ['Data Science', 'Cybersecurity', 'Machine Learning', 'System Design']
+const iconMap: Record<string, IconType> = {
+  Java: FaJava,
+  JavaScript: SiJavascript,
+  HTML5: SiHtml5,
+  CSS3: SiCss,
+  TypeScript: SiTypescript,
+  'React.js': SiReact,
+  React: SiReact,
+  'Tailwind CSS': SiTailwindcss,
+  Bootstrap: SiBootstrap,
+  Vite: SiVite,
+  'Node.js': SiNodedotjs,
+  'Express.js': SiExpress,
+  MongoDB: SiMongodb,
+  Git: SiGit,
+  GitHub: SiGithub,
+  'VS Code': VscCode,
+  Postman: SiPostman,
+  npm: SiNpm,
+  'Artificial Intelligence': FaBrain,
+}
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -98,7 +52,7 @@ const fadeInUp = {
 }
 
 function Pill({ skill, index }: { skill: Skill; index: number }) {
-  const Icon = skill.icon
+  const Icon = iconMap[skill.name] || iconMap[skill.name.replace(/\s*\(.+\)$/g, '')]
   return (
     <motion.span
       initial={{ opacity: 0, y: 8 }}
@@ -118,7 +72,7 @@ function Pill({ skill, index }: { skill: Skill; index: number }) {
   )
 }
 
-function CategoryCard({ category, delay }: { category: Category; delay: number }) {
+function CategoryCard({ category, delay }: { category: SkillCategory; delay: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -146,11 +100,13 @@ function CategoryCard({ category, delay }: { category: Category; delay: number }
 }
 
 export function Skills() {
+  const { data: content } = useContentBlock('skills')
+
   return (
     <section id="skills" className="section-padding bg-[#0a0a0a]">
       <div className="max-w-6xl mx-auto">
         <motion.div {...fadeInUp} className="mb-16">
-          <span className="text-sm text-gray-500 tracking-widest uppercase">Stack & Skills</span>
+          <span className="text-sm text-gray-500 tracking-widest uppercase">{content.eyebrow}</span>
           <div className="w-6 h-px bg-gray-600 mt-2" />
         </motion.div>
 
@@ -158,11 +114,11 @@ export function Skills() {
           {...fadeInUp}
           className="font-display text-[10vw] lg:text-[6rem] leading-none tracking-tight mb-16 lg:mb-20"
         >
-          THE STACK
+          {content.title}
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
-          {categories.map((c, i) => (
+          {content.categories.map((c, i) => (
             <CategoryCard key={c.title} category={c} delay={i * 0.08} />
           ))}
         </div>
@@ -173,7 +129,7 @@ export function Skills() {
         >
           <div className="flex items-center gap-3 mb-5">
             <span className="text-xs tracking-widest uppercase text-gray-500">
-              Currently Learning
+              {content.learningTitle}
             </span>
             <div className="flex-1 h-px bg-gray-800" />
             <span className="relative flex h-2 w-2">
@@ -182,7 +138,7 @@ export function Skills() {
             </span>
           </div>
           <div className="flex flex-wrap gap-2">
-            {learning.map((l, i) => (
+            {content.learning.map((l, i) => (
               <Pill key={l} skill={{ name: l }} index={i} />
             ))}
           </div>

@@ -1,38 +1,5 @@
 import { motion } from 'framer-motion'
-
-type EducationItem = {
-  status?: string
-  degree: string
-  field?: string
-  institution: string
-  period: string
-}
-
-const items: EducationItem[] = [
-  {
-    status: 'Current',
-    degree: 'Bachelor of Technology',
-    field: 'Computer Science Engineering — Artificial Intelligence',
-    institution: 'Medi-Caps University, Indore',
-    period: '2024 — 2028',
-  },
-  {
-    status: 'Current',
-    degree: 'BS in Data Science',
-    institution: 'IIT Madras',
-    period: '2025 — 2028',
-  },
-  {
-    degree: '12th Grade',
-    institution: 'New Horizon Scholars School, Thane',
-    period: '2024',
-  },
-  {
-    degree: '10th Grade',
-    institution: "St. Joseph's School, Greater Noida",
-    period: '2022',
-  },
-]
+import { useContentBlock } from '@/hooks/useSiteData'
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -42,11 +9,13 @@ const fadeInUp = {
 }
 
 export function Education() {
+  const { data: content } = useContentBlock('education')
+
   return (
     <section id="education" className="section-padding">
       <div className="max-w-6xl mx-auto">
         <motion.div {...fadeInUp} className="mb-16">
-          <span className="text-sm text-gray-500 tracking-widest uppercase">Education</span>
+          <span className="text-sm text-gray-500 tracking-widest uppercase">{content.eyebrow}</span>
           <div className="w-6 h-px bg-gray-600 mt-2" />
         </motion.div>
 
@@ -54,11 +23,11 @@ export function Education() {
           {...fadeInUp}
           className="font-display text-[10vw] lg:text-[6rem] leading-none tracking-tight mb-16 lg:mb-20"
         >
-          EDUCATION
+          {content.title}
         </motion.h2>
 
         <div className="space-y-5">
-          {items.map((edu, i) => (
+          {content.items.map((edu, i) => (
             <motion.div
               key={edu.degree + edu.institution}
               initial={{ opacity: 0, y: 30 }}
