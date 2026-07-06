@@ -5,9 +5,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 
+type Mode = 'signin' | 'signup' | 'forgot'
+
 export default function AuthPage() {
   const navigate = useNavigate()
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin')
+  const [mode, setMode] = useState<Mode>('signin')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -31,6 +33,13 @@ export default function AuthPage() {
         if (error) throw error
         toast.success('Account created. You can now sign in.')
         setMode('signin')
+      } else if (mode === 'forgot') {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/reset-password`,
+        })
+        if (error) throw error
+        toast.success('Password reset link sent. Check your inbox.')
+        setMode('signin')
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
@@ -44,14 +53,19 @@ export default function AuthPage() {
     }
   }
 
+  const title =
+    mode === 'signin' ? 'Sign In' : mode === 'signup' ? 'Create Account' : 'Reset Password'
+
   return (
     <div className="min-h-screen bg-background text-foreground flex items-center justify-center px-6">
       <div className="w-full max-w-md">
         <div className="mb-10">
           <span className="text-xs tracking-widest uppercase text-gray-500">Admin</span>
-          <h1 className="font-display text-5xl mt-2">{mode === 'signin' ? 'Sign In' : 'Create Account'}</h1>
+          <h1 className="font-display text-5xl mt-2">{title}</h1>
           <p className="text-sm text-gray-500 mt-3">
-            Only the site owner (whitelisted email) receives admin privileges.
+            {mode === 'forgot'
+              ? 'Enter your admin email and we\'ll send you a secure link to set a new password.'
+              : 'Only the site owner (whitelisted email) receives admin privileges.'}
           </p>
         </div>
 
@@ -66,29 +80,59 @@ export default function AuthPage() {
               className="mt-2 bg-white/[0.02] border-gray-800"
             />
           </div>
-          <div>
-            <label className="text-xs tracking-widest uppercase text-gray-500">Password</label>
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={8}
-              className="mt-2 bg-white/[0.02] border-gray-800"
-            />
-          </div>
+          {mode !== 'forgot' && (
+            <div>
+              <label className="text-xs tracking-widest uppercase text-gray-500">Password</label>
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={8}
+                className="mt-2 bg-white/[0.02] border-gray-800"
+              />
+            </div>
+          )}
           <Button type="submit" disabled={loading} className="w-full">
-            {loading ? '...' : mode === 'signin' ? 'Sign In' : 'Sign Up'}
+            {loading
+              ? '...'
+              : mode === 'signin'
+                ? 'Sign In'
+                : mode === 'signup'
+                  ? 'Sign Up'
+                  : 'Send Reset Link'}
           </Button>
         </form>
 
-        <button
-          type="button"
-          onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
-          className="mt-6 text-sm text-gray-400 hover:text-white transition"
-        >
-          {mode === 'signin' ? 'First time? Create your account →' : '← Back to sign in'}
-        </button>
+        <div className="mt-6 space-y-2">
+          {mode === 'signin' && (
+            <>
+              <button
+                type="button"
+                onClick={() => setMode('forgot')}
+                className="block text-sm text-gray-400 hover:text-white transition"
+              >
+                Forgot password? →
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode('signup')}
+                className="block text-sm text-gray-400 hover:text-white transition"
+              >
+                First time? Create your account →
+              </button>
+            </>
+          )}
+          {mode !== 'signin' && (
+            <button
+              type="button"
+              onClick={() => setMode('signin')}
+              className="block text-sm text-gray-400 hover:text-white transition"
+            >
+              ← Back to sign in
+            </button>
+          )}
+        </div>
 
         <button
           type="button"
