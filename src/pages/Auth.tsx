@@ -56,9 +56,13 @@ export default function AuthPage() {
       <div className="w-full max-w-md">
         <div className="mb-10">
           <span className="text-xs tracking-widest uppercase text-gray-500">Admin</span>
-          <h1 className="font-display text-5xl mt-2">{mode === 'signin' ? 'Sign In' : 'Create Account'}</h1>
+          <h1 className="font-display text-5xl mt-2">
+            {mode === 'signin' ? 'Sign In' : mode === 'signup' ? 'Create Account' : 'Reset Password'}
+          </h1>
           <p className="text-sm text-gray-500 mt-3">
-            Only the site owner (whitelisted email) receives admin privileges.
+            {mode === 'forgot'
+              ? "Enter your email and we'll send you a reset link."
+              : 'Only the site owner (whitelisted email) receives admin privileges.'}
           </p>
         </div>
 
@@ -73,19 +77,38 @@ export default function AuthPage() {
               className="mt-2 bg-white/[0.02] border-gray-800"
             />
           </div>
-          <div>
-            <label className="text-xs tracking-widest uppercase text-gray-500">Password</label>
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={8}
-              className="mt-2 bg-white/[0.02] border-gray-800"
-            />
-          </div>
+          {mode !== 'forgot' && (
+            <div>
+              <div className="flex items-center justify-between">
+                <label className="text-xs tracking-widest uppercase text-gray-500">Password</label>
+                {mode === 'signin' && (
+                  <button
+                    type="button"
+                    onClick={() => setMode('forgot')}
+                    className="text-xs text-gray-400 hover:text-white transition"
+                  >
+                    Forgot?
+                  </button>
+                )}
+              </div>
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={8}
+                className="mt-2 bg-white/[0.02] border-gray-800"
+              />
+            </div>
+          )}
           <Button type="submit" disabled={loading} className="w-full">
-            {loading ? '...' : mode === 'signin' ? 'Sign In' : 'Sign Up'}
+            {loading
+              ? '...'
+              : mode === 'signin'
+              ? 'Sign In'
+              : mode === 'signup'
+              ? 'Sign Up'
+              : 'Send Reset Link'}
           </Button>
         </form>
 
@@ -94,7 +117,9 @@ export default function AuthPage() {
           onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
           className="mt-6 text-sm text-gray-400 hover:text-white transition"
         >
-          {mode === 'signin' ? 'First time? Create your account →' : '← Back to sign in'}
+          {mode === 'signin'
+            ? 'First time? Create your account →'
+            : '← Back to sign in'}
         </button>
 
         <button
