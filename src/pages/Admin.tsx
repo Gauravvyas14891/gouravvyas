@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
 import { Trash2, Plus, LogOut, Eye, EyeOff, Upload } from 'lucide-react'
+import { ContentEditors } from '@/components/admin/ContentEditors'
 
 export default function AdminPage() {
   const navigate = useNavigate()
@@ -53,6 +54,7 @@ export default function AdminPage() {
 
       <main className="px-6 md:px-10 py-10 max-w-5xl mx-auto space-y-16">
         <ContactEditor />
+        <ContentEditors />
         <SectionsEditor />
       </main>
     </div>
@@ -275,26 +277,72 @@ function SectionCard({
 }
 
 function ItemRow({ item, onChange }: { item: SectionItem; onChange: () => void }) {
+  const [editing, setEditing] = useState(false)
+  const [form, setForm] = useState({
+    title: item.title,
+    subtitle: item.subtitle || '',
+    period: item.period || '',
+    description: item.description || '',
+  })
+
+  async function save() {
+    const { error } = await supabase
+      .from('section_items')
+      .update({
+        title: form.title.trim(),
+        subtitle: form.subtitle.trim() || null,
+        period: form.period.trim() || null,
+        description: form.description.trim() || null,
+      })
+      .eq('id', item.id)
+    if (error) toast.error(error.message)
+    else {
+      toast.success('Item updated')
+      setEditing(false)
+      onChange()
+    }
+  }
+
   async function del() {
     if (!confirm(`Delete "${item.title}"?`)) return
     await supabase.from('section_items').delete().eq('id', item.id)
     onChange()
   }
+
+  if (editing) {
+    return (
+      <div className="space-y-3 border border-gray-900 rounded-lg p-3">
+        <Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="bg-white/[0.02] border-gray-800" />
+        <Input value={form.subtitle} placeholder="Subtitle / organization" onChange={(e) => setForm({ ...form, subtitle: e.target.value })} className="bg-white/[0.02] border-gray-800" />
+        <Input value={form.period} placeholder="Period" onChange={(e) => setForm({ ...form, period: e.target.value })} className="bg-white/[0.02] border-gray-800" />
+        <Textarea value={form.description} placeholder="Description" onChange={(e) => setForm({ ...form, description: e.target.value })} className="bg-white/[0.02] border-gray-800" />
+        <div className="flex gap-2">
+          <Button size="sm" onClick={save}>Save</Button>
+          <Button size="sm" variant="outline" onClick={() => setEditing(false)}>Cancel</Button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex items-start justify-between gap-3 border border-gray-900 rounded-lg p-3">
       <div className="flex-1 min-w-0">
         <p className="text-sm text-white truncate">{item.title}</p>
         {item.subtitle && <p className="text-xs text-gray-500 truncate">{item.subtitle}</p>}
         {item.period && <p className="text-[10px] text-gray-600 tracking-widest uppercase">{item.period}</p>}
+        {item.description && <p className="text-xs text-gray-500 mt-2 line-clamp-2">{item.description}</p>}
         {item.file_url && (
           <a href={item.file_url} target="_blank" rel="noreferrer" className="text-xs text-blue-400 hover:underline">
             {item.file_name || 'attachment'}
           </a>
         )}
       </div>
-      <Button size="icon" variant="ghost" onClick={del}>
-        <Trash2 className="w-3.5 h-3.5 text-red-400" />
-      </Button>
+      <div className="flex gap-1">
+        <Button size="icon" variant="ghost" onClick={() => setEditing(true)}>✎</Button>
+        <Button size="icon" variant="ghost" onClick={del}>
+          <Trash2 className="w-3.5 h-3.5 text-red-400" />
+        </Button>
+      </div>
     </div>
   )
 }

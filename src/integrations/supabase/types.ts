@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      content_blocks: {
+        Row: {
+          data: Json
+          key: string
+          updated_at: string
+        }
+        Insert: {
+          data?: Json
+          key: string
+          updated_at?: string
+        }
+        Update: {
+          data?: Json
+          key?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       custom_sections: {
         Row: {
           created_at: string
