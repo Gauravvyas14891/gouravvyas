@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 
 export default function AuthPage() {
   const navigate = useNavigate()
-  const [mode, setMode] = useState<'signin' | 'signup' | 'forgot'>('signin')
+  const [mode, setMode] = useState<'signin' | 'signup'>('signin')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -31,13 +31,6 @@ export default function AuthPage() {
         if (error) throw error
         toast.success('Account created. You can now sign in.')
         setMode('signin')
-      } else if (mode === 'forgot') {
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/reset-password`,
-        })
-        if (error) throw error
-        toast.success('If that email exists, a reset link has been sent.')
-        setMode('signin')
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
@@ -56,13 +49,9 @@ export default function AuthPage() {
       <div className="w-full max-w-md">
         <div className="mb-10">
           <span className="text-xs tracking-widest uppercase text-gray-500">Admin</span>
-          <h1 className="font-display text-5xl mt-2">
-            {mode === 'signin' ? 'Sign In' : mode === 'signup' ? 'Create Account' : 'Reset Password'}
-          </h1>
+          <h1 className="font-display text-5xl mt-2">{mode === 'signin' ? 'Sign In' : 'Create Account'}</h1>
           <p className="text-sm text-gray-500 mt-3">
-            {mode === 'forgot'
-              ? "Enter your email and we'll send you a reset link."
-              : 'Only the site owner (whitelisted email) receives admin privileges.'}
+            Only the site owner (whitelisted email) receives admin privileges.
           </p>
         </div>
 
@@ -77,38 +66,19 @@ export default function AuthPage() {
               className="mt-2 bg-white/[0.02] border-gray-800"
             />
           </div>
-          {mode !== 'forgot' && (
-            <div>
-              <div className="flex items-center justify-between">
-                <label className="text-xs tracking-widest uppercase text-gray-500">Password</label>
-                {mode === 'signin' && (
-                  <button
-                    type="button"
-                    onClick={() => setMode('forgot')}
-                    className="text-xs text-gray-400 hover:text-white transition"
-                  >
-                    Forgot?
-                  </button>
-                )}
-              </div>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={8}
-                className="mt-2 bg-white/[0.02] border-gray-800"
-              />
-            </div>
-          )}
+          <div>
+            <label className="text-xs tracking-widest uppercase text-gray-500">Password</label>
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={8}
+              className="mt-2 bg-white/[0.02] border-gray-800"
+            />
+          </div>
           <Button type="submit" disabled={loading} className="w-full">
-            {loading
-              ? '...'
-              : mode === 'signin'
-              ? 'Sign In'
-              : mode === 'signup'
-              ? 'Sign Up'
-              : 'Send Reset Link'}
+            {loading ? '...' : mode === 'signin' ? 'Sign In' : 'Sign Up'}
           </Button>
         </form>
 
@@ -117,9 +87,7 @@ export default function AuthPage() {
           onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
           className="mt-6 text-sm text-gray-400 hover:text-white transition"
         >
-          {mode === 'signin'
-            ? 'First time? Create your account →'
-            : '← Back to sign in'}
+          {mode === 'signin' ? 'First time? Create your account →' : '← Back to sign in'}
         </button>
 
         <button
