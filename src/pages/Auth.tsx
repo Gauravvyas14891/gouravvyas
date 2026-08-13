@@ -44,8 +44,7 @@ export default function AuthPage() {
     }
   }
 
-  const title =
-    mode === 'signin' ? 'Sign In' : mode === 'signup' ? 'Create Account' : 'Reset Password'
+  const title = mode === 'signin' ? 'Sign In' : 'Reset Password'
 
   return (
     <div className="min-h-screen bg-background text-foreground flex items-center justify-center px-6">
