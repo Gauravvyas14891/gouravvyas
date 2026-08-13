@@ -90,22 +90,13 @@ export default function AuthPage() {
 
         <div className="mt-6 space-y-2">
           {mode === 'signin' && (
-            <>
-              <button
-                type="button"
-                onClick={() => setMode('forgot')}
-                className="block text-sm text-gray-400 hover:text-white transition"
-              >
-                Forgot password? →
-              </button>
-              <button
-                type="button"
-                onClick={() => setMode('signup')}
-                className="block text-sm text-gray-400 hover:text-white transition"
-              >
-                First time? Create your account →
-              </button>
-            </>
+            <button
+              type="button"
+              onClick={() => setMode('forgot')}
+              className="block text-sm text-gray-400 hover:text-white transition"
+            >
+              Forgot password? →
+            </button>
           )}
           {mode !== 'signin' && (
             <button
