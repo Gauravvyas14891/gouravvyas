@@ -84,13 +84,7 @@ export default function AuthPage() {
             </div>
           )}
           <Button type="submit" disabled={loading} className="w-full">
-            {loading
-              ? '...'
-              : mode === 'signin'
-                ? 'Sign In'
-                : mode === 'signup'
-                  ? 'Sign Up'
-                  : 'Send Reset Link'}
+            {loading ? '...' : mode === 'signin' ? 'Sign In' : 'Send Reset Link'}
           </Button>
         </form>
 
