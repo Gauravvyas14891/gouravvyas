@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 
-type Mode = 'signin' | 'signup' | 'forgot'
+type Mode = 'signin' | 'forgot'
 
 export default function AuthPage() {
   const navigate = useNavigate()
@@ -24,16 +24,7 @@ export default function AuthPage() {
     e.preventDefault()
     setLoading(true)
     try {
-      if (mode === 'signup') {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { emailRedirectTo: `${window.location.origin}/admin` },
-        })
-        if (error) throw error
-        toast.success('Account created. You can now sign in.')
-        setMode('signin')
-      } else if (mode === 'forgot') {
+      if (mode === 'forgot') {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
           redirectTo: `${window.location.origin}/reset-password`,
         })
