@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useContentBlock } from '@/hooks/useSiteData'
+import { DragRow, moveItem } from '@/components/admin/DragList'
 import { cloneContent } from '@/content/defaultContent'
 import type { AboutContent, EducationItem, GoalsContent, ProjectItem, Skill, SkillCategory } from '@/content/defaultContent'
 import { toast } from 'sonner'
@@ -55,7 +56,13 @@ function StringListEditor({
   return (
     <div className="space-y-2">
       {items.map((item, index) => (
-        <div key={`${item}-${index}`} className="flex items-start gap-2">
+        <DragRow
+          key={index}
+          index={index}
+          onMove={(from, to) => onChange(moveItem(items, from, to))}
+          className="rounded-md"
+        >
+        <div className="flex items-start gap-2">
           {multiline ? (
             <Textarea
               value={item}
@@ -75,6 +82,7 @@ function StringListEditor({
             <Trash2 className="w-4 h-4 text-red-400" />
           </Button>
         </div>
+        </DragRow>
       ))}
       <Button size="sm" variant="outline" onClick={() => onChange([...items, ''])}>
         <Plus className="w-4 h-4 mr-2" /> Add
@@ -140,7 +148,13 @@ function SkillsEditor() {
         </div>
 
         {form.categories.map((category, categoryIndex) => (
-          <div key={`${category.title}-${categoryIndex}`} className="border border-gray-900 rounded-xl p-4 space-y-3">
+          <DragRow
+            key={categoryIndex}
+            index={categoryIndex}
+            onMove={(from, to) => setForm({ ...form, categories: moveItem(form.categories, from, to) })}
+            className="border border-gray-900 rounded-xl p-4"
+          >
+          <div className="space-y-3">
             <div className="flex gap-2">
               <Input
                 value={category.title}
@@ -153,7 +167,7 @@ function SkillsEditor() {
             </div>
             <div className="space-y-2">
               {category.items.map((skill: Skill, skillIndex: number) => (
-                <div key={`${skill.name}-${skillIndex}`} className="grid grid-cols-1 md:grid-cols-[1fr_160px_40px] gap-2">
+                <div key={skillIndex} className="grid grid-cols-1 md:grid-cols-[1fr_160px_40px] gap-2">
                   <Input
                     placeholder="Skill name"
                     value={skill.name}
@@ -176,6 +190,7 @@ function SkillsEditor() {
               </Button>
             </div>
           </div>
+          </DragRow>
         ))}
 
         <Button variant="outline" onClick={() => setForm({ ...form, categories: [...form.categories, { title: 'New Category', items: [] }] })}>
@@ -217,7 +232,13 @@ function ProjectsEditor() {
         </div>
 
         {form.projects.map((project, index) => (
-          <div key={`${project.name}-${index}`} className="border border-gray-900 rounded-xl p-4 space-y-4">
+          <DragRow
+            key={index}
+            index={index}
+            onMove={(from, to) => setForm({ ...form, projects: moveItem(form.projects, from, to) })}
+            className="border border-gray-900 rounded-xl p-4"
+          >
+          <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-[1fr_220px_40px] gap-2">
               <Input value={project.name} placeholder="Project name" onChange={(e) => updateProject(index, { ...project, name: e.target.value })} className="bg-white/[0.02] border-gray-800" />
               <Input list="project-status-options" value={project.status} placeholder="Status" onChange={(e) => updateProject(index, { ...project, status: e.target.value })} className="bg-white/[0.02] border-gray-800" />
@@ -238,6 +259,7 @@ function ProjectsEditor() {
               <Field label="Tech"><StringListEditor items={project.tech} onChange={(tech) => updateProject(index, { ...project, tech })} placeholder="Technology" /></Field>
             </div>
           </div>
+          </DragRow>
         ))}
 
         <Button variant="outline" onClick={() => setForm({ ...form, projects: [...form.projects, { name: 'New Project', status: 'Concept Stage', description: '', features: [], tech: [] }] })}>
@@ -273,7 +295,13 @@ function EducationEditor() {
         </div>
 
         {form.items.map((item, index) => (
-          <div key={`${item.degree}-${index}`} className="border border-gray-900 rounded-xl p-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+          <DragRow
+            key={index}
+            index={index}
+            onMove={(from, to) => setForm({ ...form, items: moveItem(form.items, from, to) })}
+            className="border border-gray-900 rounded-xl p-4"
+          >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <Input value={item.degree} placeholder="Degree" onChange={(e) => updateItem(index, { ...item, degree: e.target.value })} className="bg-white/[0.02] border-gray-800" />
             <Input value={item.status || ''} placeholder="Status" onChange={(e) => updateItem(index, { ...item, status: e.target.value })} className="bg-white/[0.02] border-gray-800" />
             <Input value={item.field || ''} placeholder="Field / specialization" onChange={(e) => updateItem(index, { ...item, field: e.target.value })} className="bg-white/[0.02] border-gray-800" />
@@ -285,6 +313,7 @@ function EducationEditor() {
               </Button>
             </div>
           </div>
+          </DragRow>
         ))}
 
         <Button variant="outline" onClick={() => setForm({ ...form, items: [...form.items, { degree: 'New Education', institution: '', period: '' }] })}>

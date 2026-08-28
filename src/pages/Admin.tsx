@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
 import { Trash2, Plus, LogOut, Eye, EyeOff, Upload } from 'lucide-react'
 import { ContentEditors } from '@/components/admin/ContentEditors'
+import { DragRow, moveItem } from '@/components/admin/DragList'
 
 export default function AdminPage() {
   const navigate = useNavigate()
@@ -124,6 +125,18 @@ function SectionsEditor() {
   const [newTitle, setNewTitle] = useState('')
   const [newType, setNewType] = useState<'timeline' | 'cards' | 'documents'>('timeline')
 
+  async function reorder(from: number, to: number) {
+    const next = moveItem(sections, from, to)
+    const updates = next.map((sec, i) => ({ id: sec.id, position: (i + 1) * 10 }))
+    const results = await Promise.all(
+      updates.map((u) => supabase.from('custom_sections').update({ position: u.position }).eq('id', u.id))
+    )
+    const failed = results.find((r) => r.error)
+    if (failed?.error) toast.error(failed.error.message)
+    else toast.success('Order updated')
+    reload()
+  }
+
   async function addSection() {
     if (!newTitle.trim()) return
     const slug = newTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '-' + Date.now().toString(36)
@@ -173,13 +186,17 @@ function SectionsEditor() {
 
       <div className="space-y-6">
         {sections.length === 0 && <p className="text-sm text-gray-500">No custom sections yet.</p>}
-        {sections.map((sec) => (
-          <SectionCard
-            key={sec.id}
-            section={sec}
-            items={items.filter((i) => i.section_id === sec.id)}
-            onChange={reload}
-          />
+        {sections.length > 1 && (
+          <p className="text-xs text-gray-600">Drag the handle to reorder sections on the site.</p>
+        )}
+        {sections.map((sec, index) => (
+          <DragRow key={sec.id} index={index} onMove={reorder}>
+            <SectionCard
+              section={sec}
+              items={items.filter((i) => i.section_id === sec.id)}
+              onChange={reload}
+            />
+          </DragRow>
         ))}
       </div>
     </Card>
