@@ -81,7 +81,6 @@ function Card({ title, subtitle, children }: { title: string; subtitle?: string;
 function ContactEditor() {
   const { settings, reload } = useSiteSettings()
   const [form, setForm] = useState({ email: '', linkedin_url: '', github_url: '', location: '' })
-  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     if (settings) setForm({
@@ -92,16 +91,11 @@ function ContactEditor() {
     })
   }, [settings])
 
-  async function save() {
-    setSaving(true)
+  useRegisterSave(async () => {
     const { error } = await supabase.from('site_settings').update(form).eq('id', 1)
-    setSaving(false)
-    if (error) toast.error(error.message)
-    else {
-      toast.success('Contact info updated')
-      reload()
-    }
-  }
+    if (!error) reload()
+    return error
+  })
 
   return (
     <Card title="Contact Info" subtitle="Shown in the site footer / Contact section.">
@@ -117,9 +111,6 @@ function ContactEditor() {
           </div>
         ))}
       </div>
-      <Button onClick={save} disabled={saving} className="mt-6">
-        {saving ? 'Saving…' : 'Save'}
-      </Button>
     </Card>
   )
 }
