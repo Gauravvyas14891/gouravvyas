@@ -5,10 +5,10 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useContentBlock } from '@/hooks/useSiteData'
 import { DragRow, moveItem } from '@/components/admin/DragList'
+import { useRegisterSave } from '@/components/admin/SaveAll'
 import { cloneContent, sectionLabels, type SectionId } from '@/content/defaultContent'
 import { useSectionOrder } from '@/hooks/useSectionOrder'
 import type { AboutContent, EducationItem, GoalsContent, ProjectItem, Skill, SkillCategory } from '@/content/defaultContent'
-import { toast } from 'sonner'
 
 function EditorShell({ title, subtitle, children }: { title: string; subtitle: string; children: React.ReactNode }) {
   return (
@@ -31,9 +31,6 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   )
 }
 
-function SaveButton({ saving, onClick }: { saving: boolean; onClick: () => void }) {
-  return <Button onClick={onClick} disabled={saving}>{saving ? 'Saving…' : 'Save changes'}</Button>
-}
 
 function updateArray<T>(items: T[], index: number, next: T) {
   return items.map((item, i) => (i === index ? next : item))
