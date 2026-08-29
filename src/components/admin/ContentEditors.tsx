@@ -336,15 +336,12 @@ function GoalsEditor() {
 }
 
 function SectionOrderEditor() {
-  const { order, save, saving } = useSectionOrder()
+  const { order, save } = useSectionOrder()
   const [draft, setDraft] = useState<SectionId[]>(order)
 
   useEffect(() => setDraft(order), [order])
+  useRegisterSave(async () => (await save({ order: draft })).error)
 
-  async function submit() {
-    const { error } = await save({ order: draft })
-    saveToast(error)
-  }
 
   return (
     <EditorShell
