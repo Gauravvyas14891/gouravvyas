@@ -10,6 +10,7 @@ import { toast } from 'sonner'
 import { Trash2, Plus, LogOut, Eye, EyeOff, Upload } from 'lucide-react'
 import { ContentEditors } from '@/components/admin/ContentEditors'
 import { DragRow, moveItem } from '@/components/admin/DragList'
+import { SaveAllProvider, SaveAllBar, useRegisterSave } from '@/components/admin/SaveAll'
 
 export default function AdminPage() {
   const navigate = useNavigate()
@@ -53,11 +54,14 @@ export default function AdminPage() {
         </div>
       </header>
 
-      <main className="px-6 md:px-10 py-10 max-w-5xl mx-auto space-y-16">
-        <ContactEditor />
-        <ContentEditors />
-        <SectionsEditor />
-      </main>
+      <SaveAllProvider>
+        <main className="px-6 md:px-10 py-10 max-w-5xl mx-auto space-y-16 pb-28">
+          <ContactEditor />
+          <ContentEditors />
+          <SectionsEditor />
+        </main>
+        <SaveAllBar />
+      </SaveAllProvider>
     </div>
   )
 }
@@ -77,7 +81,6 @@ function Card({ title, subtitle, children }: { title: string; subtitle?: string;
 function ContactEditor() {
   const { settings, reload } = useSiteSettings()
   const [form, setForm] = useState({ email: '', linkedin_url: '', github_url: '', location: '' })
-  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     if (settings) setForm({
@@ -88,16 +91,11 @@ function ContactEditor() {
     })
   }, [settings])
 
-  async function save() {
-    setSaving(true)
+  useRegisterSave(async () => {
     const { error } = await supabase.from('site_settings').update(form).eq('id', 1)
-    setSaving(false)
-    if (error) toast.error(error.message)
-    else {
-      toast.success('Contact info updated')
-      reload()
-    }
-  }
+    if (!error) reload()
+    return error
+  })
 
   return (
     <Card title="Contact Info" subtitle="Shown in the site footer / Contact section.">
@@ -113,9 +111,6 @@ function ContactEditor() {
           </div>
         ))}
       </div>
-      <Button onClick={save} disabled={saving} className="mt-6">
-        {saving ? 'Saving…' : 'Save'}
-      </Button>
     </Card>
   )
 }

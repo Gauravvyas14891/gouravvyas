@@ -5,10 +5,10 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useContentBlock } from '@/hooks/useSiteData'
 import { DragRow, moveItem } from '@/components/admin/DragList'
+import { useRegisterSave } from '@/components/admin/SaveAll'
 import { cloneContent, sectionLabels, type SectionId } from '@/content/defaultContent'
 import { useSectionOrder } from '@/hooks/useSectionOrder'
 import type { AboutContent, EducationItem, GoalsContent, ProjectItem, Skill, SkillCategory } from '@/content/defaultContent'
-import { toast } from 'sonner'
 
 function EditorShell({ title, subtitle, children }: { title: string; subtitle: string; children: React.ReactNode }) {
   return (
@@ -31,9 +31,6 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   )
 }
 
-function SaveButton({ saving, onClick }: { saving: boolean; onClick: () => void }) {
-  return <Button onClick={onClick} disabled={saving}>{saving ? 'Saving…' : 'Save changes'}</Button>
-}
 
 function updateArray<T>(items: T[], index: number, next: T) {
   return items.map((item, i) => (i === index ? next : item))
@@ -92,21 +89,13 @@ function StringListEditor({
   )
 }
 
-function saveToast(error?: { message: string } | null) {
-  if (error) toast.error(error.message)
-  else toast.success('Section updated')
-}
-
 function AboutEditor() {
-  const { data, save, saving } = useContentBlock('about')
+  const { data, save } = useContentBlock('about')
   const [form, setForm] = useState<AboutContent>(data)
 
   useEffect(() => setForm(cloneContent(data)), [data])
+  useRegisterSave(async () => (await save(form)).error)
 
-  async function submit() {
-    const { error } = await save(form)
-    saveToast(error)
-  }
 
   return (
     <EditorShell title="About / Building to Learn" subtitle="Edit the main theory paragraphs and career objective block.">
@@ -119,26 +108,22 @@ function AboutEditor() {
           <Field label="Highlighted text"><Input value={form.aside.highlight || ''} onChange={(e) => setForm({ ...form, aside: { ...form.aside, highlight: e.target.value } })} className="bg-white/[0.02] border-gray-800" /></Field>
         </div>
         <Field label="Aside text"><Textarea value={form.aside.text} onChange={(e) => setForm({ ...form, aside: { ...form.aside, text: e.target.value } })} className="bg-white/[0.02] border-gray-800" /></Field>
-        <SaveButton saving={saving} onClick={submit} />
       </div>
     </EditorShell>
   )
 }
 
 function SkillsEditor() {
-  const { data, save, saving } = useContentBlock('skills')
+  const { data, save } = useContentBlock('skills')
   const [form, setForm] = useState(data)
 
   useEffect(() => setForm(cloneContent(data)), [data])
+  useRegisterSave(async () => (await save(form)).error)
 
   function updateCategory(index: number, category: SkillCategory) {
     setForm({ ...form, categories: updateArray(form.categories, index, category) })
   }
 
-  async function submit() {
-    const { error } = await save(form)
-    saveToast(error)
-  }
 
   return (
     <EditorShell title="Stack & Skills" subtitle="Add, remove, or rename skill categories and individual skills.">
@@ -203,26 +188,22 @@ function SkillsEditor() {
           <Field label="Currently learning"><StringListEditor items={form.learning} onChange={(learning) => setForm({ ...form, learning })} placeholder="Learning item" /></Field>
         </div>
 
-        <SaveButton saving={saving} onClick={submit} />
       </div>
     </EditorShell>
   )
 }
 
 function ProjectsEditor() {
-  const { data, save, saving } = useContentBlock('projects')
+  const { data, save } = useContentBlock('projects')
   const [form, setForm] = useState(data)
 
   useEffect(() => setForm(cloneContent(data)), [data])
+  useRegisterSave(async () => (await save(form)).error)
 
   function updateProject(index: number, project: ProjectItem) {
     setForm({ ...form, projects: updateArray(form.projects, index, project) })
   }
 
-  async function submit() {
-    const { error } = await save(form)
-    saveToast(error)
-  }
 
   return (
     <EditorShell title="Projects" subtitle="Add/remove projects, update status, features, tech stack, and descriptions.">
@@ -266,26 +247,22 @@ function ProjectsEditor() {
         <Button variant="outline" onClick={() => setForm({ ...form, projects: [...form.projects, { name: 'New Project', status: 'Concept Stage', description: '', features: [], tech: [] }] })}>
           <Plus className="w-4 h-4 mr-2" /> Add project
         </Button>
-        <SaveButton saving={saving} onClick={submit} />
       </div>
     </EditorShell>
   )
 }
 
 function EducationEditor() {
-  const { data, save, saving } = useContentBlock('education')
+  const { data, save } = useContentBlock('education')
   const [form, setForm] = useState(data)
 
   useEffect(() => setForm(cloneContent(data)), [data])
+  useRegisterSave(async () => (await save(form)).error)
 
   function updateItem(index: number, item: EducationItem) {
     setForm({ ...form, items: updateArray(form.items, index, item) })
   }
 
-  async function submit() {
-    const { error } = await save(form)
-    saveToast(error)
-  }
 
   return (
     <EditorShell title="Education" subtitle="Edit degrees, institutions, periods, field names, and current status labels.">
@@ -320,22 +297,18 @@ function EducationEditor() {
         <Button variant="outline" onClick={() => setForm({ ...form, items: [...form.items, { degree: 'New Education', institution: '', period: '' }] })}>
           <Plus className="w-4 h-4 mr-2" /> Add education
         </Button>
-        <SaveButton saving={saving} onClick={submit} />
       </div>
     </EditorShell>
   )
 }
 
 function GoalsEditor() {
-  const { data, save, saving } = useContentBlock('goals')
+  const { data, save } = useContentBlock('goals')
   const [form, setForm] = useState<GoalsContent>(data)
 
   useEffect(() => setForm(cloneContent(data)), [data])
+  useRegisterSave(async () => (await save(form)).error)
 
-  async function submit() {
-    const { error } = await save(form)
-    saveToast(error)
-  }
 
   return (
     <EditorShell title="Focus & Goals" subtitle="Edit currently-working-on items, long-term goals, and the final note.">
@@ -357,22 +330,18 @@ function GoalsEditor() {
         </div>
         <Field label="Note title"><Input value={form.noteTitle} onChange={(e) => setForm({ ...form, noteTitle: e.target.value })} className="bg-white/[0.02] border-gray-800" /></Field>
         <Field label="Note"><Textarea value={form.note} onChange={(e) => setForm({ ...form, note: e.target.value })} className="bg-white/[0.02] border-gray-800" /></Field>
-        <SaveButton saving={saving} onClick={submit} />
       </div>
     </EditorShell>
   )
 }
 
 function SectionOrderEditor() {
-  const { order, save, saving } = useSectionOrder()
+  const { order, save } = useSectionOrder()
   const [draft, setDraft] = useState<SectionId[]>(order)
 
   useEffect(() => setDraft(order), [order])
+  useRegisterSave(async () => (await save({ order: draft })).error)
 
-  async function submit() {
-    const { error } = await save({ order: draft })
-    saveToast(error)
-  }
 
   return (
     <EditorShell
@@ -393,9 +362,6 @@ function SectionOrderEditor() {
             </div>
           </DragRow>
         ))}
-        <div className="pt-4">
-          <SaveButton saving={saving} onClick={submit} />
-        </div>
       </div>
     </EditorShell>
   )
