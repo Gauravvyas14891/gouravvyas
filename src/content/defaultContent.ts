@@ -60,7 +60,23 @@ export type GoalsContent = {
   note: string
 }
 
+export type SectionId = 'about' | 'skills' | 'projects' | 'education' | 'custom' | 'goals'
+
+export type LayoutContent = {
+  order: SectionId[]
+}
+
+export const sectionLabels: Record<SectionId, string> = {
+  about: 'About',
+  skills: 'Stack & Skills',
+  projects: 'Projects',
+  education: 'Education',
+  custom: 'Custom Sections',
+  goals: 'Focus & Goals',
+}
+
 export type DefaultContentBlocks = {
+  layout: LayoutContent
   about: AboutContent
   skills: SkillsContent
   projects: ProjectsContent
@@ -69,6 +85,9 @@ export type DefaultContentBlocks = {
 }
 
 export const defaultContentBlocks: DefaultContentBlocks = {
+  layout: {
+    order: ['about', 'skills', 'projects', 'education', 'custom', 'goals'],
+  },
   about: {
     eyebrow: 'About',
     headings: ['BUILDING TO', 'LEARN.'],

@@ -2,17 +2,22 @@ import { useState } from 'react'
 import { useActiveSection } from '@/hooks/useActiveSection'
 import { useScrollVisibility } from '@/hooks/useScrollVisibility'
 import { cn } from '@/lib/utils'
+import { useSectionOrder } from '@/hooks/useSectionOrder'
 
-const navItems = [
-  { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Stack' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'education', label: 'Education' },
-  { id: 'goals', label: 'Goals' },
-  { id: 'contact', label: 'Contact' },
-]
+const navLabels: Record<string, string> = {
+  about: 'About',
+  skills: 'Stack',
+  projects: 'Projects',
+  education: 'Education',
+  goals: 'Goals',
+}
 
 export function Navigation() {
+  const { order } = useSectionOrder()
+  const navItems = [
+    ...order.filter((id) => navLabels[id]).map((id) => ({ id, label: navLabels[id] })),
+    { id: 'contact', label: 'Contact' },
+  ]
   const activeSection = useActiveSection()
   const isVisible = useScrollVisibility()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
