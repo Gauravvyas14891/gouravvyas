@@ -108,26 +108,22 @@ function AboutEditor() {
           <Field label="Highlighted text"><Input value={form.aside.highlight || ''} onChange={(e) => setForm({ ...form, aside: { ...form.aside, highlight: e.target.value } })} className="bg-white/[0.02] border-gray-800" /></Field>
         </div>
         <Field label="Aside text"><Textarea value={form.aside.text} onChange={(e) => setForm({ ...form, aside: { ...form.aside, text: e.target.value } })} className="bg-white/[0.02] border-gray-800" /></Field>
-        <SaveButton saving={saving} onClick={submit} />
       </div>
     </EditorShell>
   )
 }
 
 function SkillsEditor() {
-  const { data, save, saving } = useContentBlock('skills')
+  const { data, save } = useContentBlock('skills')
   const [form, setForm] = useState(data)
 
   useEffect(() => setForm(cloneContent(data)), [data])
+  useRegisterSave(async () => (await save(form)).error)
 
   function updateCategory(index: number, category: SkillCategory) {
     setForm({ ...form, categories: updateArray(form.categories, index, category) })
   }
 
-  async function submit() {
-    const { error } = await save(form)
-    saveToast(error)
-  }
 
   return (
     <EditorShell title="Stack & Skills" subtitle="Add, remove, or rename skill categories and individual skills.">
