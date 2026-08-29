@@ -188,26 +188,22 @@ function SkillsEditor() {
           <Field label="Currently learning"><StringListEditor items={form.learning} onChange={(learning) => setForm({ ...form, learning })} placeholder="Learning item" /></Field>
         </div>
 
-        <SaveButton saving={saving} onClick={submit} />
       </div>
     </EditorShell>
   )
 }
 
 function ProjectsEditor() {
-  const { data, save, saving } = useContentBlock('projects')
+  const { data, save } = useContentBlock('projects')
   const [form, setForm] = useState(data)
 
   useEffect(() => setForm(cloneContent(data)), [data])
+  useRegisterSave(async () => (await save(form)).error)
 
   function updateProject(index: number, project: ProjectItem) {
     setForm({ ...form, projects: updateArray(form.projects, index, project) })
   }
 
-  async function submit() {
-    const { error } = await save(form)
-    saveToast(error)
-  }
 
   return (
     <EditorShell title="Projects" subtitle="Add/remove projects, update status, features, tech stack, and descriptions.">
