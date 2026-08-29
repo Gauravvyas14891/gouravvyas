@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useContentBlock } from '@/hooks/useSiteData'
 import { DragRow, moveItem } from '@/components/admin/DragList'
-import { cloneContent } from '@/content/defaultContent'
+import { cloneContent, sectionLabels, type SectionId } from '@/content/defaultContent'
+import { useSectionOrder } from '@/hooks/useSectionOrder'
 import type { AboutContent, EducationItem, GoalsContent, ProjectItem, Skill, SkillCategory } from '@/content/defaultContent'
 import { toast } from 'sonner'
 
@@ -362,9 +363,48 @@ function GoalsEditor() {
   )
 }
 
+function SectionOrderEditor() {
+  const { order, save, saving } = useSectionOrder()
+  const [draft, setDraft] = useState<SectionId[]>(order)
+
+  useEffect(() => setDraft(order), [order])
+
+  async function submit() {
+    const { error } = await save({ order: draft })
+    saveToast(error)
+  }
+
+  return (
+    <EditorShell
+      title="Page Section Order"
+      subtitle="Drag whole sections to change the order they appear on the site. Hero stays first and Contact stays last."
+    >
+      <div className="space-y-2">
+        {draft.map((id, index) => (
+          <DragRow
+            key={id}
+            index={index}
+            onMove={(from, to) => setDraft(moveItem(draft, from, to))}
+            className="border border-gray-900 rounded-xl px-4 py-3 bg-black/40"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-sm">{sectionLabels[id]}</span>
+              <span className="text-[10px] tracking-widest uppercase text-gray-600">#{index + 1}</span>
+            </div>
+          </DragRow>
+        ))}
+        <div className="pt-4">
+          <SaveButton saving={saving} onClick={submit} />
+        </div>
+      </div>
+    </EditorShell>
+  )
+}
+
 export function ContentEditors() {
   return (
     <div className="space-y-8">
+      <SectionOrderEditor />
       <AboutEditor />
       <SkillsEditor />
       <ProjectsEditor />
