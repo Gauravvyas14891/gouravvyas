@@ -330,7 +330,6 @@ function GoalsEditor() {
         </div>
         <Field label="Note title"><Input value={form.noteTitle} onChange={(e) => setForm({ ...form, noteTitle: e.target.value })} className="bg-white/[0.02] border-gray-800" /></Field>
         <Field label="Note"><Textarea value={form.note} onChange={(e) => setForm({ ...form, note: e.target.value })} className="bg-white/[0.02] border-gray-800" /></Field>
-        <SaveButton saving={saving} onClick={submit} />
       </div>
     </EditorShell>
   )
