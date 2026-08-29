@@ -247,26 +247,22 @@ function ProjectsEditor() {
         <Button variant="outline" onClick={() => setForm({ ...form, projects: [...form.projects, { name: 'New Project', status: 'Concept Stage', description: '', features: [], tech: [] }] })}>
           <Plus className="w-4 h-4 mr-2" /> Add project
         </Button>
-        <SaveButton saving={saving} onClick={submit} />
       </div>
     </EditorShell>
   )
 }
 
 function EducationEditor() {
-  const { data, save, saving } = useContentBlock('education')
+  const { data, save } = useContentBlock('education')
   const [form, setForm] = useState(data)
 
   useEffect(() => setForm(cloneContent(data)), [data])
+  useRegisterSave(async () => (await save(form)).error)
 
   function updateItem(index: number, item: EducationItem) {
     setForm({ ...form, items: updateArray(form.items, index, item) })
   }
 
-  async function submit() {
-    const { error } = await save(form)
-    saveToast(error)
-  }
 
   return (
     <EditorShell title="Education" subtitle="Edit degrees, institutions, periods, field names, and current status labels.">
