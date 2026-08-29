@@ -10,6 +10,7 @@ import { toast } from 'sonner'
 import { Trash2, Plus, LogOut, Eye, EyeOff, Upload } from 'lucide-react'
 import { ContentEditors } from '@/components/admin/ContentEditors'
 import { DragRow, moveItem } from '@/components/admin/DragList'
+import { SaveAllProvider, SaveAllBar, useRegisterSave } from '@/components/admin/SaveAll'
 
 export default function AdminPage() {
   const navigate = useNavigate()
@@ -53,11 +54,14 @@ export default function AdminPage() {
         </div>
       </header>
 
-      <main className="px-6 md:px-10 py-10 max-w-5xl mx-auto space-y-16">
-        <ContactEditor />
-        <ContentEditors />
-        <SectionsEditor />
-      </main>
+      <SaveAllProvider>
+        <main className="px-6 md:px-10 py-10 max-w-5xl mx-auto space-y-16 pb-28">
+          <ContactEditor />
+          <ContentEditors />
+          <SectionsEditor />
+        </main>
+        <SaveAllBar />
+      </SaveAllProvider>
     </div>
   )
 }
