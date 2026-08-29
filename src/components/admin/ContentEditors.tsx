@@ -297,22 +297,18 @@ function EducationEditor() {
         <Button variant="outline" onClick={() => setForm({ ...form, items: [...form.items, { degree: 'New Education', institution: '', period: '' }] })}>
           <Plus className="w-4 h-4 mr-2" /> Add education
         </Button>
-        <SaveButton saving={saving} onClick={submit} />
       </div>
     </EditorShell>
   )
 }
 
 function GoalsEditor() {
-  const { data, save, saving } = useContentBlock('goals')
+  const { data, save } = useContentBlock('goals')
   const [form, setForm] = useState<GoalsContent>(data)
 
   useEffect(() => setForm(cloneContent(data)), [data])
+  useRegisterSave(async () => (await save(form)).error)
 
-  async function submit() {
-    const { error } = await save(form)
-    saveToast(error)
-  }
 
   return (
     <EditorShell title="Focus & Goals" subtitle="Edit currently-working-on items, long-term goals, and the final note.">
