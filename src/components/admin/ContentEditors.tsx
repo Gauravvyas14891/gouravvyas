@@ -362,9 +362,6 @@ function SectionOrderEditor() {
             </div>
           </DragRow>
         ))}
-        <div className="pt-4">
-          <SaveButton saving={saving} onClick={submit} />
-        </div>
       </div>
     </EditorShell>
   )
