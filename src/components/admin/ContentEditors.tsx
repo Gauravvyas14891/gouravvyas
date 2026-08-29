@@ -89,21 +89,13 @@ function StringListEditor({
   )
 }
 
-function saveToast(error?: { message: string } | null) {
-  if (error) toast.error(error.message)
-  else toast.success('Section updated')
-}
-
 function AboutEditor() {
-  const { data, save, saving } = useContentBlock('about')
+  const { data, save } = useContentBlock('about')
   const [form, setForm] = useState<AboutContent>(data)
 
   useEffect(() => setForm(cloneContent(data)), [data])
+  useRegisterSave(async () => (await save(form)).error)
 
-  async function submit() {
-    const { error } = await save(form)
-    saveToast(error)
-  }
 
   return (
     <EditorShell title="About / Building to Learn" subtitle="Edit the main theory paragraphs and career objective block.">
